@@ -27,7 +27,8 @@ router.post('/create',async (req,res) => {
 //get long url from short url code
 router.get('/get/:unique_code', async (req,res) => {
     try {
-        const url = await ShortUrl.find({ unique_code: req.params.unique_code }, {_id: 0, original_url: 1});
+        const { visits }  = await ShortUrl.find({ unique_code: req.params.unique_code });
+        const url = await ShortUrl.find({ unique_code: req.params.unique_code, visits: visits + 1 }, {_id: 0, original_url: 1});
         res.status(201).json(url);
     } catch (err) {
         res.status(500).json(err);
